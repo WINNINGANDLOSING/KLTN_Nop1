@@ -1,0 +1,12 @@
+FROM /teamspace/studios/this_studio/PhoGPT-4B-Chat-gguf/PhoGPT-4B-Chat-Q8_0.gguf
+
+TEMPLATE """
+## Câu hỏi:
+{{ if .Prompt }}{{ .Prompt }}{{ end }}
+
+## Trả lời:"""
+
+PARAMETER stop "## Câu hỏi:"
+PARAMETER stop "## Trả lời"
+PARAMETER temperature 0.8
+PARAMETER top_k 20

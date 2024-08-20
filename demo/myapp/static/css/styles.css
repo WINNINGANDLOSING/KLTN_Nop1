@@ -1,0 +1,425 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  background: url("/static/images/watercolor_background.png");
+  background-size: 100% 100%;
+  background-position: center;
+  width: 100%;
+  min-height: 100vh;
+}
+.text-center-container {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+}
+.text-center-container span {
+  font-size: 30px;
+  padding-bottom: 10px;
+}
+.text-center {
+  margin-right: 10px;
+  font-size: 30px;
+  background: linear-gradient(to right, #6a0572, #ff5f6d);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+.sidebar {
+  flex-shrink: 0;
+  display: flex;
+  font-size: 90px;
+  flex-direction: row;
+  width: 100%;
+  background-color: white;
+}
+
+.intro {
+  display: flex;
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-main {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 10rem;
+}
+
+.intro span {
+  background: linear-gradient(to right, #6a0572, #ff5f6d);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-clip: text;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.sidebar .intro img {
+  width: 20%;
+  height: 70%;
+  /* object-fit: cover;  */
+  border-radius: 8px;
+}
+.homepage,
+.chatbot {
+  color: black;
+
+  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-right: 50px;
+  font-size: 15px;
+  display: flex;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8rem;
+  padding: 10px;
+}
+
+a:hover {
+  background-color: #ec2029;
+  font-weight: bold;
+
+  border-radius: 8px;
+  color: white;
+}
+.active-link {
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #3498db;
+  background-color: #ecf3fc;
+}
+.sidebar img {
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+}
+.chat-container {
+  flex-grow: 1;
+  flex-shrink: 0;
+  min-height: 100%;
+  width: 85%;
+  align-self: center;
+  background-color: #f6f6fd;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.homepage-container {
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+.homepage-container span:first-child {
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.homepage-container button {
+  background: linear-gradient(
+    85.14deg,
+    #50ad06 -2.86%,
+    #49ca0d 26.8%,
+    #44d200 107.54%
+  );
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  margin-top: 5rem;
+  transition: transform 0.3s ease-in-out;
+}
+.homepage-container button:hover {
+  transform: scale(120%);
+}
+
+.lienHe-container {
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+.lienHe-container span:first-child {
+  font-size: 20px;
+}
+form {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+  padding: 20px;
+  align-items: center;
+  font-size: 14px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  flex-grow: 1;
+  min-height: 100vh;
+
+  padding: 10px;
+  margin: 0px 12rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  padding: 50px 0;
+  background-color: #3498db;
+  color: white;
+  border-bottom: 5px solid #2ecc71;
+}
+
+.header h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.header p {
+  font-size: 18px;
+  margin: 10px 0 0;
+}
+
+.content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.card {
+  background: white;
+  width: 30%;
+  margin: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card h2 {
+  font-size: 24px;
+  color: #3498db;
+}
+
+.card p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  max-height: 450px;
+  
+  width: 100%;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 14px;
+  overflow-x: hidden;
+}
+.chat-row {
+  display: flex;
+  margin: 5px;
+  width: 100%;
+  position: relative;
+}
+.row-reverse {
+  flex-direction: row-reverse;
+}
+
+.chat-icon {
+  width: 35px;
+  height: 35px;
+  bottom: -5px;
+  position: absolute;
+  align-self: flex-end;
+}
+
+.chat-bubble-container {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+}
+
+.ai-chat-bubble-container {
+  margin-left: 3rem;
+}
+
+.human-chat-bubble-container {
+  margin-right: 3rem;
+}
+
+.chat-tail {
+  position: absolute;
+  bottom: 0;
+  z-index: 1; /* Lower z-index to place it below chat bubbles */
+}
+
+.ai-tail {
+  left: -15px;
+  border: solid 15px transparent;
+  border-bottom-color: #cff591;
+}
+
+.human-tail {
+  right: -10px;
+  border: solid 15px transparent;
+  border-bottom-color: #e8718b;
+}
+
+.chat-bubble {
+  font-family: "Source Sans Pro", sans-serif, "Segoe UI", "Roboto", sans-serif;
+  border: 1px solid transparent;
+  padding: 5px 15px;
+  max-width: 30rem;
+  display: flex;
+  position: relative; /* Ensure proper stacking context */
+  z-index: 3; /* Higher z-index to place it above chat-tail */
+}
+
+/* 135deg means the gradient starts at the top-left corner and goes to the bottom-right corner */
+/* 0%: start at the beginning of the gradient */
+/* 100%: start at the end of the gradient */
+.ai-bubble {
+  background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+  /* Ensure the pseudo-element is positioned relative to this element */
+  border-radius: 20px 20px 20px 0px;
+  border: none;
+}
+
+.human-bubble {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border-radius: 20px;
+}
+.clear-button {
+  font-size: 10px;
+  border-radius: 8px;
+  background-color: red;
+  color: white;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: absolute;
+  right: 10px;
+  bottom: 5rem;
+}
+
+.clear-button:hover {
+  transform: scale(1.05);
+}
+
+.ask-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-button-lienHe{
+      background: linear-gradient(
+    60.29deg,
+    #f9a51a -4.93%,
+    #fbb612 18.27%,
+    #ffdd00 71.59%
+  );
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 1px 10px;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+.send-button {
+  /* background: linear-gradient(
+    60.29deg,
+    #f9a51a -4.93%,
+    #fbb612 18.27%,
+    #ffdd00 71.59%
+  );
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 1px 10px; */
+  border: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: url("/static/images/send.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.send-button:hover, .send-button-lienHe:hover {
+  transform: scale(1.05);
+  width: 22px;
+  height: 22px;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  input {
+    border: 1px solid #00000050;
+    border-radius: 5px;
+    padding: 5px;
+    outline-style: none;
+    margin-right: 10px;
+  }
+  input::placeholder {
+    font-size: 14px;
+  }
+  .input-text {
+    padding: 1rem;
+    font-size: 16px;
+    line-height: 10rem;
+  }
+  div {
+    input::placeholder {
+      font-size: 14px;
+    }
+  }
+}
+
+.form-container div input:first-child {
+  margin-right: 10px;
+}

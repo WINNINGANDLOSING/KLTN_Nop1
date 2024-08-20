@@ -1,0 +1,20 @@
+FROM /teamspace/studios/this_studio/vistral-legal-chat/vistral-legal-chat-unsloth.Q4_K_M.gguf
+
+TEMPLATE """
+<s> <<SYS>>
+Bạn là một chuyên viên tư vấn pháp luật Việt Nam. Bạn có nhiều năm kinh nghiệm và kiến thức chuyên sâu. Bạn sẽ cung cấp câu trả lời về pháp luật, tư vấn luật pháp cho các câu hỏi của User.
+<</SYS>>
+{{ if .Prompt }}
+## user:
+{{ .Prompt }}{{end}}
+
+## assistant:"""
+
+PARAMETER num_keep 24
+PARAMETER temperature 0.8
+PARAMETER stop "<s>"
+PARAMETER stop "</s>"
+PARAMETER stop "<</SYS>>"
+PARAMETER stop "<<SYS>>"
+PARAMETER stop "[INST]"
+PARAMETER stop "[/INST]"

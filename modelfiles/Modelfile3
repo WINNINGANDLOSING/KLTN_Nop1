@@ -1,0 +1,14 @@
+FROM /teamspace/studios/this_studio/phi-3-mental-health-q4/phi-3-mental-health-q4-unsloth.Q4_K_M.gguf
+
+TEMPLATE """
+## user:
+{{if .Prompt}}{{.Prompt}}{{end}}
+
+## assistant:
+"""
+
+PARAMETER num_keep 24
+PARAMETER temperature 0.8
+PARAMETER stop "<|user|>"
+PARAMETER stop "<|end|>"
+PARAMETER stop "<|assistant|>"

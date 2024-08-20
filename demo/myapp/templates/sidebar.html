@@ -1,0 +1,36 @@
+{% load static %}
+<div class="sidebar">
+    <div class="intro"><span>Law Chatbot TDTU</span></div>
+    <div class="sidebar-main">
+        <div class="homepage">
+            {% if request.resolver_match.url_name == 'homepage' %}
+            <a href="{% url 'homepage' %}" class='active-link'>
+            {% else %}
+            <a href="{% url 'homepage' %}">
+            {% endif %}
+              <img src="{% static 'images/home.png' %}" />
+              <span>Homepage</span>
+            </a>
+        </div>
+        <div class="chatbot">
+            {% if request.resolver_match.url_name == 'chatbot' %}
+            <a href="{% url 'chatbot' %}" class="active-link">
+            {% else %}
+            <a href="{% url 'chatbot' %}">
+            {% endif %}
+              <img src="{% static 'images/chatbot.png' %}" />
+              <span>Chatbot</span>
+            </a>
+        </div>
+        <div class="chatbot">
+            {% if request.resolver_match.url_name == 'contact' %}
+            <a href="{% url 'contact' %}" class="active-link">
+            {% else %}
+            <a href="{% url 'contact' %}">
+            {% endif %}
+              <img src="{% static 'images/contact-us.png' %}" />
+              <span>Liên hệ</span>
+            </a>
+        </div>
+    </div>
+</div>

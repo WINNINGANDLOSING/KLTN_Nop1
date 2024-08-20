@@ -1,0 +1,37 @@
+<!-- chatbot/templates/chat.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chat with the Bot</h1>
+    <form id="chat-form" method="post">
+        {% csrf_token %}
+        <textarea name="question" rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Send</button>
+    </form>
+
+    <h2>Response:</h2>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('chat-form').onsubmit = async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData
+            });
+            const result = await response.json();
+            document.getElementById('response').textContent = result.response;
+        };
+    </script>
+</body>
+</html>
