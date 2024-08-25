@@ -17,7 +17,9 @@ from llama_index.core.settings import Settings
 from dotenv import load_dotenv
 
 from .prompts import gen_qa_prompt, gen_rag_answer, formatted_context, intent_classification_prompt, text_summarization_prompt
+
 load_dotenv()
+
 
 class RAG:
     def __init__(
@@ -29,6 +31,7 @@ class RAG:
         self.model = Ollama(model=model_name, request_timeout=120.0)
         self.embed_model = HuggingFaceEmbedding(model_name=embedding_model)
         Settings.embed_model = self.embed_model
+        Settings.llm = self.model
 
         ## get vector store 
         self.activeloop_id = "hunter"
@@ -106,6 +109,11 @@ class RAG:
 
         return response
 
+    def base_answer(self, query_str):
+        query_engine = self.index.as_query_engine(similiarity_top_k=6)
+        return query_engine.query(query_str)
+
+
     def response(self, query_str):
         final_nodes = self.retrieve(query_str)
 
@@ -121,24 +129,53 @@ class RAG:
             gen_rag_answer.format(query_str=query_str, context_str=context)
         )
 
-        return response, final_nodes
+        sources = [
+            node.metata['file_name']
+            for node in final_nodes
+        ]
+
+        return response, sources
+
+    # def intent_classification(self, query_str):
+    #     """
+    #     consider whether the user's query is legal-related or just normal question
+    #     """
+        
+    #     model = Gemini(model_name="models/gemini-1.5-flash", temperature=0)
+
+    #     max_attempt = 5
+    #     current_attempt = 0
+    #     while current_attempt < max_attempt:
+    #         output = model.complete(intent_classification_prompt).text.strip()
+    #         if output in {"0", "1"}:
+    #             return int(output)    
+    #         else:
+    #             current_attempt += 1
+        
+    #     return 0
 
     def intent_classification(self, query_str):
         """
-        consider whether the user's query is legal-related or just normal question
+        Classify whether the user's query is related to legal issues or just a normal question.
         """
-        
         model = Gemini(model_name="models/gemini-1.5-flash", temperature=0)
+        prompt = intent_classification_prompt.format(query_str) 
 
-        max_attempt = 5
+        max_attempts = 5
         current_attempt = 0
-        while current_attempt < max_attemp:
-            output = model.complete(intent_classification_prompt).text.strip()
-            if output in {"0", "1"}:
-                return int(output)    
-            else:
-                current_attempt += 1
         
+        while current_attempt < max_attempts:
+            try:
+                output = model.complete(prompt).text.strip()
+                if output in {"0", "1"}:
+                    return int(output)
+            except Exception as e:
+                print(f"Error during classification attempt {current_attempt + 1}: {e}")
+            
+            current_attempt += 1
+        
+        # Log or handle the case when classification fails after max attempts
+        print(f"Failed to classify after {max_attempts} attempts.")
         return 0
 
     def web_search(self, query_str):
@@ -164,13 +201,19 @@ class RAG:
         output = model.complete(text_sum).text
         return output
 
+
+
+
 def format_chatbot_output(input_text):
     # Convert input to string if it isn't already
     text = str(input_text)
     
     # Replace dash followed by a space with a new line and dash
     text = text.replace(" - ", "\n- ")
-    
+    text = text.replace("<", "")
+    text = text.replace("<<", "")
+    text = text.replace(">", "")
+    text = text.replace(">>", "")
     text = text.replace("Bạn là một chuyên viên tư vấn pháp luật Việt Nam. Bạn có nhiều năm kinh nghiệm và kiến thức chuyên sâu. Bạn sẽ cung cấp câu trả lời về pháp luật cho các câu hỏi của User.", "")
     text = text.replace("Bạn là một chuyên viên tư vấn pháp luật tại Việt Nam với nhiều năm kinh nghiệm và kiến thức chuyên sâu. Nhiệm vụ của bạn là cung cấp câu trả lời và tư vấn pháp lý cho các câu hỏi của người dùng","")
     # Define a regex pattern to match "a)", "b)", "c)", etc.
