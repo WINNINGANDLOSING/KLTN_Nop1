@@ -35,7 +35,7 @@ from django.http import HttpResponse
 from .forms import ContactForm
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
-from .prompts import gen_qa_prompt, gen_rag_answer
+from .prompts import gen_qa_prompt, gen_rag_answer, formatted_context, intent_classification_prompt, text_summarization_prompt
 from .RAG import RAG
 from .RAG import format_chatbot_output
 
@@ -76,12 +76,28 @@ def success(request):
 def homepage(request):
     return render(request, 'homepage.html')
 
+rag = RAG(
+        model_name="vistral-legal-chat"    # vistral, phogpt, vinallama
+    )
 
+def return_answer(query):
+    
+    query_type = rag.intent_classification(query)
+    answer = ''
+    if(query_type==1):
+        answer = rag.answer(query)
+    else:
+        
+        ollama_model = Ollama(model="vistral-legal-chat", request_timeout=120.0)
+        answer = ollama_model.complete(query)
+        
+        
+    answer = format_chatbot_output(answer)
+
+    return answer
 def chatbot(request):
     
-    rag = RAG(
-        model_name="vistral"    # vistral, phogpt, vinallama
-    )
+    
     # Retrieve all chat messages
     chat_history = ChatMessage.objects.all()
     
@@ -97,9 +113,9 @@ def chatbot(request):
             ChatMessage.objects.create(message=question, origin='human')
             
             # Process the user's question and get the AI response
-            response = rag.answer(question)
+            response = return_answer(question)
             
-            response = format_chatbot_output(response)
+            
             # Save the AI response to the chat history
             ChatMessage.objects.create(message=response, origin='AI')
             
