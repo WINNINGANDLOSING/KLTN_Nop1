@@ -136,22 +136,46 @@ class RAG:
 
         return response, sources
 
+    # def intent_classification(self, query_str):
+    #     """
+    #     consider whether the user's query is legal-related or just normal question
+    #     """
+        
+    #     model = Gemini(model_name="models/gemini-1.5-flash", temperature=0)
+
+    #     max_attempt = 5
+    #     current_attempt = 0
+    #     while current_attempt < max_attempt:
+    #         output = model.complete(intent_classification_prompt).text.strip()
+    #         if output in {"0", "1"}:
+    #             return int(output)    
+    #         else:
+    #             current_attempt += 1
+        
+    #     return 0
+
     def intent_classification(self, query_str):
         """
-        consider whether the user's query is legal-related or just normal question
+        Classify whether the user's query is related to legal issues or just a normal question.
         """
-        
         model = Gemini(model_name="models/gemini-1.5-flash", temperature=0)
+        prompt = intent_classification_prompt.format(query_str) 
 
-        max_attempt = 5
+        max_attempts = 5
         current_attempt = 0
-        while current_attempt < max_attemp:
-            output = model.complete(intent_classification_prompt).text.strip()
-            if output in {"0", "1"}:
-                return int(output)    
-            else:
-                current_attempt += 1
         
+        while current_attempt < max_attempts:
+            try:
+                output = model.complete(prompt).text.strip()
+                if output in {"0", "1"}:
+                    return int(output)
+            except Exception as e:
+                print(f"Error during classification attempt {current_attempt + 1}: {e}")
+            
+            current_attempt += 1
+        
+        # Log or handle the case when classification fails after max attempts
+        print(f"Failed to classify after {max_attempts} attempts.")
         return 0
 
     def web_search(self, query_str):
@@ -178,13 +202,18 @@ class RAG:
         return output
 
 
+
+
 def format_chatbot_output(input_text):
     # Convert input to string if it isn't already
     text = str(input_text)
     
     # Replace dash followed by a space with a new line and dash
     text = text.replace(" - ", "\n- ")
-    
+    text = text.replace("<", "")
+    text = text.replace("<<", "")
+    text = text.replace(">", "")
+    text = text.replace(">>", "")
     text = text.replace("Bạn là một chuyên viên tư vấn pháp luật Việt Nam. Bạn có nhiều năm kinh nghiệm và kiến thức chuyên sâu. Bạn sẽ cung cấp câu trả lời về pháp luật cho các câu hỏi của User.", "")
     text = text.replace("Bạn là một chuyên viên tư vấn pháp luật tại Việt Nam với nhiều năm kinh nghiệm và kiến thức chuyên sâu. Nhiệm vụ của bạn là cung cấp câu trả lời và tư vấn pháp lý cho các câu hỏi của người dùng","")
     # Define a regex pattern to match "a)", "b)", "c)", etc.
@@ -195,17 +224,29 @@ def format_chatbot_output(input_text):
     
     return formatted_text
 
+def return_answer(model, query):
+    
+    query_type = model.intent_classification(query)
+    answer = ''
+    if(query_type==1):
+        answer = model.answer(query)
+    else:
+        print('non-legal related question')
+        ollama_model = Ollama(model="vistral-legal-chat", request_timeout=120.0)
+        answer = ollama_model.complete(query)
+        
+    answer = format_chatbot_output(answer)
+
+    return answer
+
 if __name__ == "__main__":
+    
+    # sudo systemctl stop ollama
+    # ollama serve
     rag = RAG(
         model_name="vistral-legal-chat"    # vistral, phogpt, vinallama
     )
-    # sudo systemctl stop ollama
-    # ollama serve
+
     
-    question = 'Đối với hợp đồng vay không kỳ hạn và không có lãi thì bên cho vay có quyền đòi lại tài sản và bên vay cũng có quyền trả nợ vào bất cứ lúc nào có đúng không?'
-    #answer = rag.answer(question)
-    answer = rag.base_answer(question)
-    final_answer = format_chatbot_output(answer)
-    # print(answer)
-    print(final_answer)
+    
     
